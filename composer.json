@@ -1,0 +1,46 @@
+{
+    "name": "zyna/zyna",
+    "description": "Professional-Grade Laravel Component Package for Flowbite",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Suliman",
+            "email": "suliman@zyna.dev"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "illuminate/support": "^11.0|^12.0",
+        "illuminate/view": "^11.0|^12.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^9.0",
+        "phpunit/phpunit": "^11.0"
+    },
+    "suggest": {
+        "livewire/livewire": "^3.0 - To enable Livewire component implementations"
+    },
+    "autoload": {
+        "psr-4": {
+            "Zyna\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Zyna\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Zyna\\ZynaServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    }
+}
