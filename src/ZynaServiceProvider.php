@@ -4,9 +4,11 @@ namespace Zyna;
 
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Zyna\Console\Commands\InstallCommand;
+use Zyna\Support\AssetManager;
 use Zyna\Support\StyleBuilder;
 use Zyna\Support\Theme;
 
@@ -35,6 +37,13 @@ class ZynaServiceProvider extends ServiceProvider
         // Register StyleBuilder as singleton
         $this->app->singleton(StyleBuilder::class, function ($app) {
             return new StyleBuilder($app->make(Theme::class));
+        });
+
+        // Register AssetManager as singleton
+        $this->app->singleton(AssetManager::class, function ($app) {
+            $config = config('zyna.assets', []);
+            
+            return new AssetManager($config);
         });
     }
 
@@ -81,6 +90,9 @@ class ZynaServiceProvider extends ServiceProvider
         
         // Register components - both implementations use Blade components
         $this->registerComponents($implementation);
+
+        // Register view composers for automatic asset inclusion
+        $this->registerViewComposers();
     }
 
     /**
@@ -152,5 +164,43 @@ class ZynaServiceProvider extends ServiceProvider
         }
         
         return $components;
+    }
+
+    /**
+     * Register view composers for automatic asset inclusion.
+     *
+     * @return void
+     */
+    protected function registerViewComposers()
+    {
+        // Only register if auto asset inclusion is enabled
+        if (!config('zyna.assets.auto_include', true)) {
+            return;
+        }
+
+        // Register composer for layouts and main views
+        View::composer(['layouts.*', 'components.*'], function ($view) {
+            $assetManager = $this->app->make(AssetManager::class);
+            
+            // Skip if assets are already injected
+            if ($view->offsetExists('zyna_assets_injected')) {
+                return;
+            }
+
+            // Add assets to view data
+            $view->with([
+                'zyna_assets' => $assetManager,
+                'zyna_assets_injected' => true,
+            ]);
+        });
+
+        // Register for Zyna component views specifically
+        View::composer('zyna::*', function ($view) {
+            $assetManager = $this->app->make(AssetManager::class);
+            
+            $view->with([
+                'zyna_assets' => $assetManager,
+            ]);
+        });
     }
 }

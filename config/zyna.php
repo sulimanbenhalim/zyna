@@ -98,6 +98,26 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Asset Management
+    |--------------------------------------------------------------------------
+    |
+    | Configure how assets (CSS/JS) are managed and included.
+    |
+    */
+    'assets' => [
+        'auto_include' => true, // Automatically include assets in views
+        'base_path' => '/vendor/zyna',
+        'manifest_path' => null, // Auto-detected if null
+        'development_server' => 'http://localhost:5173',
+        'use_manifest' => true,
+        'livewire' => [
+            'preload' => true, // Preload assets before Livewire components
+            'defer' => false, // Whether to defer asset loading
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | JavaScript Configuration
     |--------------------------------------------------------------------------
     |
