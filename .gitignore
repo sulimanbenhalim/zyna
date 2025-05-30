@@ -14,3 +14,6 @@ Thumbs.db
 *.log
 /dist/*
 !.gitkeep
+Package Development.md
+Zyna Development Roadmap.md
+Zyna.md
