@@ -3,6 +3,7 @@
 namespace Zyna;
 
 use Illuminate\Support\ServiceProvider;
+use Zyna\Support\StyleBuilder;
 use Zyna\Support\Theme;
 
 class ZynaServiceProvider extends ServiceProvider
@@ -25,6 +26,11 @@ class ZynaServiceProvider extends ServiceProvider
             $themeConfig = config("zyna.themes.{$activeTheme}", []);
             
             return new Theme($themeConfig);
+        });
+
+        // Register StyleBuilder as singleton
+        $this->app->singleton(StyleBuilder::class, function ($app) {
+            return new StyleBuilder($app->make(Theme::class));
         });
     }
 
