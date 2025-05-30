@@ -6,6 +6,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Zyna\Console\Commands\InstallCommand;
 use Zyna\Support\StyleBuilder;
 use Zyna\Support\Theme;
 
@@ -61,6 +62,13 @@ class ZynaServiceProvider extends ServiceProvider
 
         // Load views
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'zyna');
+
+        // Register Artisan commands
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                InstallCommand::class,
+            ]);
+        }
 
         // Register components based on implementation setting
         $implementation = config('zyna.components.implementation', 'blade');
