@@ -3,6 +3,7 @@
 namespace Zyna;
 
 use Illuminate\Support\ServiceProvider;
+use Zyna\Support\Theme;
 
 class ZynaServiceProvider extends ServiceProvider
 {
@@ -17,6 +18,14 @@ class ZynaServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__.'/../config/zyna.php', 'zyna'
         );
+
+        // Register Theme as singleton
+        $this->app->singleton(Theme::class, function ($app) {
+            $activeTheme = config('zyna.themes.active', 'default');
+            $themeConfig = config("zyna.themes.{$activeTheme}", []);
+            
+            return new Theme($themeConfig);
+        });
     }
 
     /**

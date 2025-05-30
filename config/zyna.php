@@ -25,7 +25,75 @@ return [
     |
     */
     'themes' => [
-        // Theme configuration will be expanded in v0.0.4
+        'default' => [
+            /*
+            |--------------------------------------------------------------------------
+            | Colors
+            |--------------------------------------------------------------------------
+            |
+            | Define the color palette for components. These map to Flowbite's
+            | CSS variables like --color-primary-500.
+            |
+            */
+            'colors' => [
+                'primary' => [
+                    '50' => '#eff6ff',
+                    '100' => '#dbeafe',
+                    '200' => '#bfdbfe',
+                    '300' => '#93c5fd',
+                    '400' => '#60a5fa',
+                    '500' => '#3b82f6',
+                    '600' => '#2563eb',
+                    '700' => '#1d4ed8',
+                    '800' => '#1e40af',
+                    '900' => '#1e3a8a',
+                ],
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | Typography
+            |--------------------------------------------------------------------------
+            |
+            | Define font families for different text types.
+            |
+            */
+            'fonts' => [
+                'sans' => "'Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'system-ui', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', 'sans-serif', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'",
+                'body' => "'Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'system-ui', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', 'sans-serif', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'",
+                'mono' => "'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', 'monospace'",
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | Spacing
+            |--------------------------------------------------------------------------
+            |
+            | Define custom spacing values.
+            |
+            */
+            'spacing' => [],
+
+            /*
+            |--------------------------------------------------------------------------
+            | Breakpoints
+            |--------------------------------------------------------------------------
+            |
+            | Define responsive breakpoint values.
+            |
+            */
+            'breakpoints' => [],
+        ],
+
+        /*
+        |--------------------------------------------------------------------------
+        | Active Theme
+        |--------------------------------------------------------------------------
+        |
+        | Specify which theme is currently active.
+        |
+        */
+        'active' => 'default',
     ],
 
     /*
