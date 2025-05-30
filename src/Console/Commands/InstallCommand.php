@@ -129,16 +129,16 @@ class InstallCommand extends Command
             return;
         }
 
-        if ($this->option('force') || $this->confirm('Tailwind CSS not found. Install it?', true)) {
-            $this->info('📦 Installing Tailwind CSS...');
+        if ($this->option('force') || $this->confirm('Tailwind CSS v4 not found. Install it?', true)) {
+            $this->info('📦 Installing Tailwind CSS v4...');
             
-            $result = Process::run('npm install tailwindcss @tailwindcss/vite --save-dev');
+            $result = Process::run('npm install tailwindcss@next @tailwindcss/vite@next --save-dev');
             
             if ($result->successful()) {
-                $this->info('✅ Tailwind CSS installed successfully');
+                $this->info('✅ Tailwind CSS v4 installed successfully');
                 $this->updateAppCssForTailwind();
             } else {
-                $this->error('❌ Failed to install Tailwind CSS');
+                $this->error('❌ Failed to install Tailwind CSS v4');
                 $this->line($result->errorOutput());
             }
         }
@@ -154,16 +154,16 @@ class InstallCommand extends Command
             return;
         }
 
-        if ($this->option('force') || $this->confirm('Flowbite not found. Install it?', true)) {
-            $this->info('📦 Installing Flowbite...');
+        if ($this->option('force') || $this->confirm('Flowbite v3 not found. Install it?', true)) {
+            $this->info('📦 Installing Flowbite v3...');
             
-            $result = Process::run('npm install flowbite --save');
+            $result = Process::run('npm install flowbite@^3.0.0 --save');
             
             if ($result->successful()) {
-                $this->info('✅ Flowbite installed successfully');
+                $this->info('✅ Flowbite v3 installed successfully');
                 $this->updateAppCssForFlowbite();
             } else {
-                $this->error('❌ Failed to install Flowbite');
+                $this->error('❌ Failed to install Flowbite v3');
                 $this->line($result->errorOutput());
             }
         }
