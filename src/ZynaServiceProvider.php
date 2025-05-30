@@ -2,7 +2,10 @@
 
 namespace Zyna;
 
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 use Zyna\Support\StyleBuilder;
 use Zyna\Support\Theme;
 
@@ -59,12 +62,87 @@ class ZynaServiceProvider extends ServiceProvider
         // Load views
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'zyna');
 
-        // Check component implementation setting
-        // This logic will be expanded in v0.0.6 when implementing the component registration system
+        // Register components based on implementation setting
         $implementation = config('zyna.components.implementation', 'blade');
+        
         if ($implementation === 'livewire' && !class_exists(\Livewire\Livewire::class)) {
             // Fallback to blade if Livewire is selected but not installed
             config(['zyna.components.implementation' => 'blade']);
+            $implementation = 'blade';
         }
+        
+        // Register components - both implementations use Blade components
+        $this->registerComponents($implementation);
+    }
+
+    /**
+     * Register component implementations.
+     *
+     * @param string $implementation
+     * @return void
+     */
+    protected function registerComponents(string $implementation)
+    {
+        $directory = $implementation === 'livewire' 
+            ? __DIR__ . '/Components/Livewire'
+            : __DIR__ . '/Components/Blade';
+            
+        $namespace = $implementation === 'livewire'
+            ? 'Zyna\\Components\\Livewire\\'
+            : 'Zyna\\Components\\Blade\\';
+        
+        $components = $this->discoverComponents($directory, $namespace);
+        
+        // Register all components as Blade components with zyna: prefix
+        foreach ($components as $class => $componentName) {
+            Blade::component($class, "zyna:{$componentName}");
+        }
+    }
+
+    /**
+     * Discover component classes in a directory.
+     *
+     * @param string $directory
+     * @param string $namespace
+     * @return array
+     */
+    protected function discoverComponents(string $directory, string $namespace): array
+    {
+        $filesystem = new Filesystem();
+        $components = [];
+        
+        if (!$filesystem->isDirectory($directory)) {
+            return $components;
+        }
+        
+        foreach ($filesystem->files($directory) as $file) {
+            if ($file->getExtension() !== 'php') {
+                continue;
+            }
+            
+            // Get component name from filename (without .php)
+            $componentName = str_replace('_', '-', Str::snake($file->getFilenameWithoutExtension()));
+            
+            $className = $namespace . $file->getFilenameWithoutExtension();
+            
+            // Only add if class exists
+            if (class_exists($className)) {
+                $components[$className] = $componentName;
+            }
+        }
+        
+        // Scan subdirectories recursively
+        foreach ($filesystem->directories($directory) as $dir) {
+            $dirName = basename($dir);
+            $components = array_merge(
+                $components,
+                $this->discoverComponents(
+                    $dir,
+                    $namespace . $dirName . '\\'
+                )
+            );
+        }
+        
+        return $components;
     }
 }
