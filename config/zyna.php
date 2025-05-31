@@ -137,11 +137,32 @@ return [
     | Icon Configuration
     |--------------------------------------------------------------------------
     |
-    | Configure the default icon provider.
+    | Configure the icon system settings for Flowbite icons.
     |
     */
     'icons' => [
-        'provider' => 'heroicons',
-        'defaultSet' => 'outline',
+        'provider' => 'flowbite',
+        'default_style' => 'outline', // Available: 'outline', 'solid'
+        'default_size' => 'md', // Available: 'xs', 'sm', 'md', 'lg', 'xl', '2xl'
+        'cache_ttl' => 86400, // 24 hours in seconds
+        'sizes' => [
+            'xs' => 'w-3 h-3',
+            'sm' => 'w-4 h-4',
+            'md' => 'w-5 h-5',
+            'lg' => 'w-6 h-6',
+            'xl' => 'w-8 h-8',
+            '2xl' => 'w-10 h-10',
+        ],
+        'colors' => [
+            'primary' => 'text-blue-600',
+            'secondary' => 'text-gray-600',
+            'success' => 'text-green-600',
+            'danger' => 'text-red-600',
+            'warning' => 'text-yellow-600',
+            'info' => 'text-cyan-600',
+            'light' => 'text-gray-400',
+            'dark' => 'text-gray-900',
+            'white' => 'text-white',
+        ],
     ],
 ];

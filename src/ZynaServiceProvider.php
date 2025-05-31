@@ -7,8 +7,11 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Zyna\Console\Commands\DownloadFlowbiteIcons;
 use Zyna\Console\Commands\InstallCommand;
+use Zyna\Console\Commands\ListIcons;
 use Zyna\Support\AssetManager;
+use Zyna\Support\IconManager;
 use Zyna\Support\StyleBuilder;
 use Zyna\Support\Theme;
 
@@ -45,6 +48,11 @@ class ZynaServiceProvider extends ServiceProvider
             
             return new AssetManager($config);
         });
+
+        // Register IconManager as singleton
+        $this->app->singleton(IconManager::class, function ($app) {
+            return new IconManager();
+        });
     }
 
     /**
@@ -76,6 +84,8 @@ class ZynaServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 InstallCommand::class,
+                DownloadFlowbiteIcons::class,
+                ListIcons::class,
             ]);
         }
 
